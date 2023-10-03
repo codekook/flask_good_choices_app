@@ -21,15 +21,40 @@
 
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#fafafa">
+
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 
 <body>
 
-    <!-- Add your site or application content here -->
-    <p>Hello world! This is Good Choices.</p>
+    <div class="header-container">
+        <header class="wrapper clearfix">
+            <a href="{{ url_for('index') }}"><h1 class="title">Good Choices</h1></a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('feedback') }}">Feedback</li></a>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <div class="main-container">
+        <div class="main wrapper clearfix">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+     <div class="footer-container">
+        <footer class="wrapper">
+            <h3>Contact Us</h3>
+            <p>Email Address</p>
+        </footer>
+    </div>
+        
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
     <script src="js/app.js"></script>
-    {% block content %}
-    {% endblock %}
 
 </body>
 
