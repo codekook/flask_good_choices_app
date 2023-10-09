@@ -1,16 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for
 import random
+from datetime import datetime
+from logging import DEBUG
 
 app = Flask(__name__)
 
+app.logger.setLevel(DEBUG)
+
+feedback_list = []
+
 @app.route('/')
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
+    if request.method == "POST":
+        url = request.form['url']
+        Chore(url)
+        app.logger.debug('New Chore : ' + url)
     return render_template("index.html")
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     if request.method == "POST":
+        url = request.form['url']
+        store_feedback(url)
+        app.logger.debug('Feedback: ' + url)
         return redirect(url_for("index"))
     return render_template("feedback.html")
 
@@ -24,6 +37,13 @@ def chore_score(get_chore_completed):
         return "\U0001F600"
     else:
         return "\U0001F636"
+
+def store_feedback(url):
+    feedback_list.append(dict(
+        url=url,
+        user='chipcorey',
+        date= datetime.utcnow()
+        ))
 
 def all_chores_completed(chore_list):
     affirmations = ["Great job!", 

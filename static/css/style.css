@@ -81,8 +81,57 @@ textarea {
 }
 
 /* ==========================================================================
+   ALL: Blue Theme
+   ========================================================================== */
+
+.header-container {
+    border-bottom: 20px solid #425ad3;
+}
+
+.footer-container,
+.main aside {
+    border-top: 20px solid #425ad3;
+}
+
+.header-container,
+.footer-container,
+.main aside {
+    background: #42a0d3;
+}
+
+.title {
+    color: white;
+}
+
+.wrapper {
+    width: 90%;
+    margin: 0 5%;
+}
+
+/* ==========================================================================
    Author's custom styles
    ========================================================================== */
+
+a {
+    color: #8F540D;
+}
+
+a:hover {
+    color: #D39447;
+}
+
+a:visited {
+    color: #1E5373;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #1E5373; 
+}
+
+.main aside h3,
+footer h3 {
+    color: white; 
+}
 
 /* ==========================================================================
    Helper classes

@@ -7,8 +7,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
+    <meta property="og:title" content="Good Choices App">
+    <meta property="og:type" content="Helps manaage finishing chores around the house">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
 
@@ -16,8 +16,8 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icon.png">
 
-    <link rel="stylesheet" href="/./static/css/style.css">
-    <link rel="stylesheet" href="/./static/css/normalize.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
 
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#fafafa">
@@ -26,17 +26,19 @@
 </head>
 
 <body>
-
     <div class="header-container">
         <header class="wrapper clearfix">
             <a href="{{ url_for('index') }}"><h1 class="title">Good Choices</h1></a>
             <nav>
                 <ul>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Login</a></li>
                     <li><a href="{{ url_for('feedback') }}">Feedback</li></a>
                 </ul>
             </nav>
         </header>
-    </div>
+    </div>  
+
     <div class="main-container">
         <div class="main wrapper clearfix">
             {% block content %}

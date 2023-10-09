@@ -3,4 +3,33 @@
 {% block title %} Good Choices Home {% endblock %}
 
 {% block content %}
+
+    <article>
+        <h2>Welcome to the Good Choices App</h2>
+        <p>This is a simple app that helps kids and parents get their chores done faster and with fewer arguments along the way.</p>
+    </article>
+
+    <section>
+        <h2>Add New Chores</h2>
+        <form action="" method="post">
+            <p>
+                Add a chore :
+                <input type="text" name="url"> <button type="submit">Add</button>
+            </p>
+        </form>
+    </section>
+    <section>
+        <h2>Chore List</h2>
+        <table>
+            <tr>
+                <th>Chore</th>
+                <th>Completed</th>
+                <th>Remove</th>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+
 {% endblock %}
