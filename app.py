@@ -1,21 +1,29 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import random
 from datetime import datetime
 from logging import DEBUG
 
 app = Flask(__name__)
 
+app.secret_key = b'/\xeb~\xd7\xca(%\xf7'
+
 app.logger.setLevel(DEBUG)
 
 feedback_list = []
 
 @app.route('/')
+@app.route('/welcome')
+def welcome():
+    return render_template("welcome.html")
+
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
         url = request.form['url']
-        Chore(url)
+        new_chore = Chore(url)
+        chore_status = chore_score(new_chore.get_chore_completed)
         app.logger.debug('New Chore : ' + url)
+        return render_template("index.html", new_chore=new_chore, chore_status=chore_status)
     return render_template("index.html")
 
 @app.route('/feedback', methods=['GET', 'POST'])
@@ -24,6 +32,7 @@ def feedback():
         url = request.form['url']
         store_feedback(url)
         app.logger.debug('Feedback: ' + url)
+        flash("Your Feedback: " + url)
         return redirect(url_for("index"))
     return render_template("feedback.html")
 

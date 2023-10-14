@@ -4,11 +4,6 @@
 
 {% block content %}
 
-    <article>
-        <h2>Welcome to the Good Choices App</h2>
-        <p>This is a simple app that helps kids and parents get their chores done faster and with fewer arguments along the way.</p>
-    </article>
-
     <section>
         <h2>Add New Chores</h2>
         <form action="" method="post">
@@ -24,10 +19,14 @@
             <tr>
                 <th>Chore</th>
                 <th>Completed</th>
+                <th>Status</th>
                 <th>Remove</th>
             </tr>
             <tr>
-                <td></td>
+                <td>{{new_chore}}</td>
+                <td>R Button</td>
+                <td>{{chore_status}}</td>
+                <td> <button type="submit">X</button></td>
             </tr>
         </table>
     </section>

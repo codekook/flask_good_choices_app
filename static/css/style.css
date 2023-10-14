@@ -133,6 +133,27 @@ footer h3 {
     color: white; 
 }
 
+/* flashes styling */
+
+.flashes ul {
+    margin: 0.0;
+    background: #42a0d3;
+    color: #000;
+
+    list-style-type: none;
+    list-style: none;
+}
+
+.flashes ul {
+    background: #42a0d3;
+    color: #000 
+}
+
+article.flashes {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
