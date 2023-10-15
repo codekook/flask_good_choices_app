@@ -21,10 +21,11 @@ def index():
     if request.method == "POST":
         url = request.form['url']
         new_chore = Chore(url)
-        chore_status = chore_score(new_chore.get_chore_completed)
+        #chore_status = chore_score(new_chore.get_chore_completed)
         app.logger.debug('New Chore : ' + url)
-        return render_template("index.html", new_chore=new_chore, chore_status=chore_status)
-    return render_template("index.html")
+
+    chore_lst = Chore.chore_list
+    return render_template("index.html", chore_lst=chore_lst)
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
