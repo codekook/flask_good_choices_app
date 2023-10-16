@@ -31,7 +31,7 @@
                             <tr>
                                 <td>{{chore}}</td>
                                 <td><input type="radio"></td>
-                                <td>{{text}}</td>
+                                <td>{{chore.chore_score()}}</td>
                                 <td><button type="submit">X</button></td>
                             </tr>
                         {% endfor %}
@@ -39,6 +39,11 @@
                 </table>
             </div>
         </div>
+    </section>
+    <section>
+        <p>
+            <button type="submit">Reset Chores</button>
+        </p>
     </section>
 
 {% endblock %}

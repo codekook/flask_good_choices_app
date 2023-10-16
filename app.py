@@ -21,7 +21,6 @@ def index():
     if request.method == "POST":
         url = request.form['url']
         new_chore = Chore(url)
-        #chore_status = chore_score(new_chore.get_chore_completed)
         app.logger.debug('New Chore : ' + url)
 
     chore_lst = Chore.chore_list
@@ -40,13 +39,6 @@ def feedback():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
-
-def chore_score(get_chore_completed):
-    if get_chore_completed == True:
-        #return an emoji
-        return "\U0001F600"
-    else:
-        return "\U0001F636"
 
 def store_feedback(url):
     feedback_list.append(dict(
@@ -74,7 +66,7 @@ def all_chores_completed(chore_list):
 def reset_chore_list(chore_list):
     for i in chore_list:
         i.set_chore_completed(False)
-        print(chore_score(i.get_chore_completed()))
+        print(i.chore_score())
 
 class Chore(object):
 
@@ -110,6 +102,15 @@ class Chore(object):
     
     def get_frequency(self):
         return self.__frequency
+    
+    def chore_score(self):
+        status = self.get_chore_completed
+
+        if status == True:
+            #return an emoji
+            return "\U0001F600"
+        else:
+            return "\U0001F636"
 
 if __name__ == '__main__':
     app.run(debug=True)
