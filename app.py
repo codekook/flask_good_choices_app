@@ -19,9 +19,24 @@ def welcome():
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
-        url = request.form['url']
-        new_chore = Chore(url)
-        app.logger.debug('New Chore : ' + url)
+        if request.form.get('new_chore'):
+            newChore = request.form['new_chore']
+            new_chore = Chore(newChore)
+            app.logger.debug('New Chore: ' + newChore)
+
+        if request.form.get('rmove_chore'):
+            chore_number = request.form['chore_num']
+            Chore.chore_list[int(chore_number)].remove_chore()
+            print(Chore.chore_list)
+            app.logger.debug('Chore Removed')
+        
+        if request.form.get('reset'):
+            pass 
+
+        if request.form.get('completed'):
+            chore_complete = request.form['chore_complete']
+            Chore.chore_list[int(chore_complete)].set_chore_completed(True)
+            app.logger.debug('Chore Completed')
 
     chore_lst = Chore.chore_list
     return render_template("index.html", chore_lst=chore_lst)
