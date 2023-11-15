@@ -9,7 +9,7 @@
         <form action="" method="post">
             <p>
                 Add a chore :
-                <input type="text" name="new_chore" id="new_chore"> <button id="new_chore_btn" type="submit">Add</button>
+                <input type="text" name="new_chore" id="new_chore"> <button type="submit" id="new_chore_btn">Add</button>
             </p>
         </form>
     </section>
@@ -23,42 +23,64 @@
                             <th>Number</th>
                             <th>Chore</th>
                             <th>Completed</th>
-                            <th>Emo</th>
+                            <!--th>Emo</th-->
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    {% if chore_lst %}
-                        {% for chore in chore_lst %}
-                            <tr>
-                                <td>{{chore_lst.index(chore)}}</td>
-                                <td>{{chore}}</td>
-                                <td>
-                                    <form action="" method="post">
-                                        <input type="checkbox" name="chore_complete" id="chore_complete" value={{chore_lst.index(chore)}}>
-                                    </form>
-                                </td>
-                                <td>{{chore.chore_score()}}</td>
-                                <td>
-                                    <form action="" method="post">
-                                        <input type="submit" name="rmove_chore" id="rmove_chore" value="X">
-                                        <input type="hidden" name="chore_num" id="chore_num" value={{chore_lst.index(chore)}}>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
+                    <tbody>
+                        {% if chore_lst %}
+                            {% for chore in chore_lst %}
+                                <tr>
+                                    <td>{{chore_lst.index(chore)}}</td>
+                                    <td>{{chore}}</td>
+                                    <td>
+                                        <form action="" method="post">
+                                            <!-- div hx-target="closest tr" hx-swap="outerHTML" -->
+                                            <input type="checkbox" hx-trigger="click" name="status_complete" id="status_complete" value="+">
+                                            <!--/div-->
+                                        </form>
+                                    </td>
+                                    <!--td>
+                                        <div id="emoji_update" hx-swap="outerHTML" hx-put="\U0001F600">{{chore.chore_score(status_check)}}</div>
+                                    </td-->
+                                    <td>
+                                        <form action="" method="post">
+                                            <input type="submit" name="rmove_chore" id="rmove_chore" value="x">
+                                            <input type="hidden" name="chore_num" id="chore_num" value={{chore_lst.index(chore)}}>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
                 </table>
             </div>
         </div>
     </section>
-    <section>
-        <p id="output">0</p>
+    <!--section>
         <form action="" method="post">
             <p>
                 <button type="submit" name="reset">Reset Chores</button>
             </p>
         </form>
-    </section>
+    </section-->
+        <!-- py-script>
+        def chore_score_func():
+            happy_emoji =  "\U0001F600"
+            target_div = Element("chore_score")
+            target_div.element.innerText = happy_emoji
+
+        def counter_func():
+            counter = 0
+            print(counter)
+            if document.getElementById("new_chore_btn"):
+                counter += 1
+            elif document.getElementById("rmove_chore"):
+                counter -= 1
+            target_div = Element("output")
+            target_div.element.innerText = counter
+            print(counter)
+        </py-script -->
         <!--
         <script>
             var add = document.getElementById("new_chore_btn");

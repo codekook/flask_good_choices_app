@@ -22,21 +22,31 @@ def index():
         if request.form.get('new_chore'):
             newChore = request.form['new_chore']
             new_chore = Chore(newChore)
-            app.logger.debug('New Chore: ' + newChore)
+            status_check = new_chore.get_chore_completed()
+            app.logger.debug('New Chore: ' + newChore + ' | Status: ' + str(status_check))
 
         if request.form.get('rmove_chore'):
             chore_number = request.form['chore_num']
             Chore.chore_list[int(chore_number)].remove_chore()
-            print(Chore.chore_list)
-            app.logger.debug('Chore Removed')
+            current_chores = Chore.chore_list
+            #app.logger.debug('Chore Removed Number: ' + str(chore_number) + ' | Chore List: ' + current_chores)
         
         if request.form.get('reset'):
-            pass 
+            for i in Chore.chore_list:
+                i.set_chore_completed(False)
+                status_check = i.get_chore_completed()
+                chore_lst = Chore.chore_list 
+                app.logger.debug('Chore: ' + i + '| Status: ' + str(status_check))
+            return render_template("index.html", chore_lst=chore_lst)
 
-        if request.form.get('completed'):
+        if request.form.get('status_complete'):
             chore_complete = request.form['chore_complete']
             Chore.chore_list[int(chore_complete)].set_chore_completed(True)
-            app.logger.debug('Chore Completed')
+            status_check = Chore.chore_list[int(chore_complete)].get_chore_completed()
+            chore_lst = Chore.chore_list
+            app.logger.debug('Chore Completed Number: ' + chore_complete + ' | Status: ' + str(status_check))
+            return render_template("index.html", chore_lst=chore_lst)
+
 
     chore_lst = Chore.chore_list
     return render_template("index.html", chore_lst=chore_lst)
@@ -78,11 +88,6 @@ def all_chores_completed(chore_list):
         if i.get_chore_completed() == True:
             return random.choice(affirmations)
 
-def reset_chore_list(chore_list):
-    for i in chore_list:
-        i.set_chore_completed(False)
-        print(i.chore_score())
-
 class Chore(object):
 
     chore_list = []
@@ -118,9 +123,7 @@ class Chore(object):
     def get_frequency(self):
         return self.__frequency
     
-    def chore_score(self):
-        status = self.get_chore_completed
-
+    def chore_score(self, status):
         if status == True:
             #return an emoji
             return "\U0001F600"
