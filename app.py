@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import random
 from datetime import datetime
 from logging import DEBUG
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 
@@ -15,6 +16,33 @@ feedback_list = []
 @app.route('/welcome')
 def welcome():
     return render_template("welcome.html")
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash("Thanks for creating an account!")
+        return redirect(url_for('login'))
+    if form.errors:
+        flash('Oops, you have need to check your form' + str(form.errors))
+        app.logger.error('Validation Error\n' + str(form.errors))
+    return render_template("register.html", title='Register', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.email.data == 'wcbookout@yahoo.com' and form.password.data == 'test':
+            flash('Logged in')
+            return redirect(url_for('index'))
+        else:
+            flash('Oops, something went wrong')
+    if form.errors:
+        flash('Oops, incorrect email or password' + str(form.errors))
+        app.logger.error('Validation Error\n' + str(form.errors))
+    return render_template("login.html", title="Login", form=form)
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
