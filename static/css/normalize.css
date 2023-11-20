@@ -93,6 +93,7 @@ template {
 
 a {
     background-color: transparent;
+    text-decoration: none;
 }
 
 /**
@@ -188,6 +189,7 @@ sub {
 
 img {
     border: 0;
+    border-radius: 15px;
 }
 
 /**
