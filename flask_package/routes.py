@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_package.models import User
-from flask_package import app 
+from flask_package import app, db, bcrypt 
 from flask_package.forms import RegistrationForm, LoginForm
 from flask_package.helpers import Chore, store_feedback
 
@@ -14,8 +14,13 @@ def welcome():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
         flash("Thanks for creating an account!")
         return redirect(url_for('login'))
+    
     if form.errors:
         flash('Oops, you have need to check your form' + str(form.errors))
         app.logger.error('Validation Error\n' + str(form.errors))

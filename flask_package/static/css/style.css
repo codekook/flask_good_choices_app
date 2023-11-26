@@ -98,12 +98,12 @@ textarea {
 }
 
 .header-container {
-    border-bottom: 20px solid #2fa250;
+    border-bottom: 10px solid #2fa250;
 }
 
 .footer-container,
 .main aside {
-    border-top: 20px solid #2fa250;
+    border-top: 10px solid #2fa250;
 }
 
 .header-container,
@@ -114,6 +114,9 @@ textarea {
 
 .title {
     color: rgb(0, 0, 0);
+    font-family: "signpainter", "cursive";
+    font-weight: bold;
+    font-size: 3.7em
 }
 
 .wrapper {
@@ -126,11 +129,11 @@ textarea {
    ========================================================================== */
 
 body {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .navbar {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 a {
@@ -233,7 +236,7 @@ nav a:hover {
    ============== */
 
 .main {
-    padding: 30px 0;
+    padding: 20px 0;
 }
 
 .main article h1 {
@@ -247,7 +250,7 @@ nav a:hover {
 
 .footer-container footer {
     color: rgb(255, 255, 255);
-    padding: 20px 0;
+    padding: 60px 0;
 }
 
 /* ==========================================================================
