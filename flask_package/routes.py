@@ -22,7 +22,7 @@ def register():
         return redirect(url_for('login'))
     
     if form.errors:
-        flash('Oops, you have need to check your form' + str(form.errors))
+        flash('Oops, you need to check your form' + str(form.errors))
         app.logger.error('Validation Error\n' + str(form.errors))
     return render_template("register.html", title='Register', form=form)
 
