@@ -53,53 +53,57 @@ def logout():
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":
-        if request.form.get('new_chore'):
-            newChore = request.form['new_chore']
-            new_chore = Chore(newChore)
-            status_check = new_chore.get_chore_completed()
-            app.logger.debug('New Chore: ' + newChore +
-                             ' | Status: ' + str(status_check))
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            if request.form.get('new_chore'):
+                newChore = request.form['new_chore']
+                new_chore = Chore(newChore)
+                status_check = new_chore.get_chore_completed()
+                app.logger.debug('New Chore: ' + newChore +
+                                ' | Status: ' + str(status_check))
 
-        if request.form.get('rmove_chore'):
-            chore_number = request.form['chore_num']
-            Chore.chore_list[int(chore_number)].remove_chore()
-            current_chores = Chore.chore_list
-            # app.logger.debug('Chore Removed Number: ' + str(chore_number) + ' | Chore List: ' + current_chores)
+            if request.form.get('rmove_chore'):
+                chore_number = request.form['chore_num']
+                Chore.chore_list[int(chore_number)].remove_chore()
+                current_chores = Chore.chore_list
+                # app.logger.debug('Chore Removed Number: ' + str(chore_number) + ' | Chore List: ' + current_chores)
 
-        if request.form.get('reset'):
-            for i in Chore.chore_list:
-                i.set_chore_completed(False)
-                status_check = i.get_chore_completed()
+            if request.form.get('reset'):
+                for i in Chore.chore_list:
+                    i.set_chore_completed(False)
+                    status_check = i.get_chore_completed()
+                    chore_lst = Chore.chore_list
+                    app.logger.debug(
+                        'Chore: ' + i + '| Status: ' + str(status_check))
+                return render_template("index.html", chore_lst=chore_lst)
+
+            if request.form.get('status_complete'):
+                chore_complete = request.form['chore_complete']
+                Chore.chore_list[int(chore_complete)].set_chore_completed(True)
+                status_check = Chore.chore_list[int(
+                    chore_complete)].get_chore_completed()
                 chore_lst = Chore.chore_list
-                app.logger.debug(
-                    'Chore: ' + i + '| Status: ' + str(status_check))
-            return render_template("index.html", chore_lst=chore_lst)
-
-        if request.form.get('status_complete'):
-            chore_complete = request.form['chore_complete']
-            Chore.chore_list[int(chore_complete)].set_chore_completed(True)
-            status_check = Chore.chore_list[int(
-                chore_complete)].get_chore_completed()
-            chore_lst = Chore.chore_list
-            app.logger.debug('Chore Completed Number: ' +
-                             chore_complete + ' | Status: ' + str(status_check))
-            return render_template("index.html", chore_lst=chore_lst)
-
-    chore_lst = Chore.chore_list
-    return render_template("index.html", chore_lst=chore_lst)
+                app.logger.debug('Chore Completed Number: ' +
+                                chore_complete + ' | Status: ' + str(status_check))
+                return render_template("index.html", chore_lst=chore_lst)
+        chore_lst = Chore.chore_list
+        return render_template("index.html", chore_lst=chore_lst)
+    else:
+        return redirect(url_for('welcome')) 
 
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-    if request.method == "POST":
-        url = request.form['url']
-        store_feedback(url)
-        app.logger.debug('Feedback: ' + url)
-        flash("Your Feedback: " + url)
-        return redirect(url_for("index"))
-    return render_template("feedback.html")
-
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            url = request.form['url']
+            store_feedback(url)
+            app.logger.debug('Feedback: ' + url)
+            flash("Your Feedback: " + url)
+            return redirect(url_for("index"))
+        return render_template("feedback.html")
+    else:
+        return redirect(url_for('welcome'))
 
 @app.errorhandler(404)
 def page_not_found(e):
