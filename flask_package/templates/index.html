@@ -20,7 +20,7 @@
                 <table class="table table-striped table-bordered" id="choreTable">
                     <thead class="thead table-dark">
                         <tr>
-                            <th>Number</th>
+                            <th hidden>Number</th>
                             <th>Chore</th>
                             <th>Completed</th>
                             <!--th>Emo</th-->
@@ -31,22 +31,18 @@
                         {% if chore_lst %}
                             {% for chore in chore_lst %}
                                 <tr>
-                                    <td>{{chore_lst.index(chore)}}</td>
-                                    <td>{{chore}}</td>
+                                    <td hidden>{{chore[0]}}</td>
+                                    <td>{{chore[1]}}</td>
                                     <td>
                                         <form action="" method="post">
-                                            <!-- div hx-target="closest tr" hx-swap="outerHTML" -->
                                             <input type="checkbox" hx-trigger="click" name="status_complete" id="status_complete" value="+">
-                                            <!--/div-->
                                         </form>
                                     </td>
-                                    <!--td>
-                                        <div id="emoji_update" hx-swap="outerHTML" hx-put="\U0001F600">{{chore.chore_score(status_check)}}</div>
-                                    </td-->
+                                    <!--td>Emoji</td-->
                                     <td>
                                         <form action="" method="post">
                                             <input type="submit" name="rmove_chore" id="rmove_chore" value="x">
-                                            <input type="hidden" name="chore_num" id="chore_num" value={{chore_lst.index(chore)}}>
+                                            <input type="hidden" name="chore_num" id="chore_num" value={{chore[0]}}>
                                         </form>
                                     </td>
                                 </tr>
