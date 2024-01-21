@@ -59,7 +59,8 @@ def index():
         if request.method == "POST":
             if request.form.get('new_chore'):
                 newChore = request.form['new_chore']
-                new_chore = Chore(chore=newChore, frequency='Weekly', completed=False)
+                new_chore = Chore(
+                chore=newChore, frequency='Weekly', completed='\U0001F636')
                 db.session.add(new_chore)
                 db.session.commit()
                 app.logger.debug('New Chore: ' + newChore)
@@ -72,33 +73,25 @@ def index():
                 app.logger.debug('Deleted Chore: ' + str(chore_to_delete))
 
             if request.form.get('reset'):
-                pass
-                '''for i in Chore.chore_list:
-                    i.set_chore_completed(False)
-                    status_check = i.get_chore_completed()
-                    chore_lst = Chore.chore_list
-                    app.logger.debug(
-                        'Chore: ' + i + '| Status: ' + str(status_check))
-                return render_template("index.html", chore_lst=chore_lst)'''
+                reset_chores = db.update(Chore).values(completed='\U0001F636')
+                db.session.execute(reset_chores)
+                db.session.commit()
+                app.logger.debug('Reset Chores')
 
-            if request.form.get('status_complete'):
-                pass
-                '''chore_complete = request.form['chore_complete']
-                Chore.chore_list[int(chore_complete)].set_chore_completed(True)
-                status_check = Chore.chore_list[int(
-                    chore_complete)].get_chore_completed()
-                chore_lst = Chore.chore_list
-                app.logger.debug('Chore Completed Number: ' +
-                                chore_complete + ' | Status: ' + str(status_check))
-                return render_template("index.html", chore_lst=chore_lst)
-        chore_lst = Chore.chore_list'''
-        #query the chore table and put existing chores into a list
-        chore_table_info = db.session.execute(db.select(Chore.chore_id, Chore.chore).order_by(Chore.chore_id)).fetchall()
+            if request.form.get('completed'):
+                chore_number = request.form['chore_num']
+                print(chore_number)
+                chore_completed = db.update(Chore).where(
+                    Chore.chore_id == chore_number).values(completed="\U0001F600")
+                db.session.execute(chore_completed)
+                db.session.commit()
+                app.logger.debug('Chore Completed Number: ' + str(chore_completed))
+
+        chore_table_info = db.session.execute(db.select(Chore.chore_id, Chore.chore, Chore.completed).order_by(Chore.chore_id)).fetchall()
         print(chore_table_info)
         return render_template("index.html", chore_lst=chore_table_info)
     else:
-        return redirect(url_for('welcome')) 
-
+        return redirect(url_for('welcome'))
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():

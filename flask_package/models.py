@@ -23,7 +23,7 @@ class Chore(db.Model):
     __tablename__ = 'chores'
     chore_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True, autoincrement=True)
     chore = db.Column(db.String(255), unique=True, nullable=False)
-    completed = db.Column(db.Boolean, nullable=False)
+    completed = db.Column(db.String(255), nullable=False)
     frequency = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):

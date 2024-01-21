@@ -27,6 +27,8 @@ def all_chores_completed(chore_list):
         if i.get_chore_completed() == True:
             return random.choice(affirmations)
 
+def emoji_status():
+    return "\U0001F636"
 
 class Chore(object):
 
