@@ -1,26 +1,38 @@
+"""Routes controls the application, executing all website functionality submitted by the user."""
+
 from flask import render_template, request, redirect, url_for, flash
 from flask_package.models import User, Chore
-from flask_package import app, db, bcrypt 
+from flask_package import app, db, bcrypt
 from flask_package.forms import RegistrationForm, LoginForm
 from flask_package.helpers import store_feedback
-from flask_login import login_user, logout_user, current_user 
+from flask_login import login_user, logout_user, current_user
 from datetime import date
 
 @app.route('/')
 @app.route('/welcome')
 def welcome():
+
+    """Renders the login page."""
+
     return render_template("welcome.html")
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
+    """Registers new users and redirects them to the login page."""
+
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         today = date.today()
-        user = User(date=today, username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(date=today, 
+                    username=form.username.data, 
+                    email=form.email.data, 
+                    password=hashed_password
+                    )
         db.session.add(user)
         db.session.commit()
         flash("Thanks for creating an account!")
@@ -34,6 +46,9 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
+    """Renders the login page and validates user login credentials."""
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -50,20 +65,26 @@ def login():
 
 @app.route('/logout')
 def logout():
+
+    """Logs a user out and redirects the user to the welcome page."""
+
     logout_user()
     return redirect(url_for('welcome'))
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+
+    """Renders the main page for creating, deleting, and managing chores."""
+
     if current_user.is_authenticated:
         if request.method == "POST":
             if request.form.get('new_chore'):
-                newChore = request.form['new_chore']
+                chore_input = request.form['new_chore']
                 new_chore = Chore(
-                chore=newChore, frequency='Weekly', completed='\U0001F636')
+                chore=chore_input, frequency='Weekly', completed='\U0001F636')
                 db.session.add(new_chore)
                 db.session.commit()
-                app.logger.debug('New Chore: ' + newChore)
+                app.logger.debug('New Chore: ' + chore_input)
 
             if request.form.get('rmove_chore'):
                 chore_number = request.form['chore_num']
@@ -87,7 +108,8 @@ def index():
                 db.session.commit()
                 app.logger.debug('Chore Completed Number: ' + str(chore_completed))
 
-        chore_table_info = db.session.execute(db.select(Chore.chore_id, Chore.chore, Chore.completed).order_by(Chore.chore_id)).fetchall()
+        chore_table_info = db.session.execute(db.select(Chore.chore_id, 
+                                                        Chore.chore, Chore.completed).order_by(Chore.chore_id)).fetchall()
         print(chore_table_info)
         return render_template("index.html", chore_lst=chore_table_info)
     else:
@@ -95,6 +117,9 @@ def index():
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
+
+    """Renders the feedback page."""
+
     if current_user.is_authenticated:
         if request.method == "POST":
             url = request.form['url']
@@ -108,4 +133,7 @@ def feedback():
 
 @app.errorhandler(404)
 def page_not_found(e):
+
+    """Renders Page Not Found 404 Error."""
+
     return render_template("404.html"), 404
