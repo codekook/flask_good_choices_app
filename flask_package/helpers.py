@@ -30,6 +30,8 @@ def all_chores_completed(chore_table_info):
                     "It means the world to me!"
                     ]
 
-    for i in chore_table_info:
-        if i[2] == "\U0001F600":
-            return random.choice(affirmations)
+    emo_list = []
+    for i, j, k in chore_table_info:
+        emo_list.append(k)
+    if all(j == "\U0001F600" for j in emo_list):
+        return random.choice(affirmations)

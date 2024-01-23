@@ -1,4 +1,6 @@
-"""Create the application, instantiate and configure the sqlite database passing in the app, instantiate Bcrypt for hashing the password and instantiate a login_manager object and pass in the app"""
+"""Create the application, instantiate and configure the sqlite 
+database passing in the app, instantiate Bcrypt for hashing the 
+password and instantiate a login_manager object and pass in the app"""
 
 from logging import DEBUG
 from flask import Flask

@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_package.models import User, Chore
 from flask_package import app, db, bcrypt
 from flask_package.forms import RegistrationForm, LoginForm
-from flask_package.helpers import store_feedback
+from flask_package.helpers import store_feedback, all_chores_completed
 from flask_login import login_user, logout_user, current_user
 from datetime import date
 
@@ -28,16 +28,16 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         today = date.today()
-        user = User(date=today, 
-                    username=form.username.data, 
-                    email=form.email.data, 
+        user = User(date=today,
+                    username=form.username.data,
+                    email=form.email.data,
                     password=hashed_password
                     )
         db.session.add(user)
         db.session.commit()
         flash("Thanks for creating an account!")
         return redirect(url_for('login'))
-    
+
     if form.errors:
         flash('Oops, you need to check your form' + str(form.errors))
         app.logger.error('Validation Error\n' + str(form.errors))
@@ -108,9 +108,15 @@ def index():
                 db.session.commit()
                 app.logger.debug('Chore Completed Number: ' + str(chore_completed))
 
-        chore_table_info = db.session.execute(db.select(Chore.chore_id, 
+        chore_table_info = db.session.execute(db.select(Chore.chore_id,
                                                         Chore.chore, Chore.completed).order_by(Chore.chore_id)).fetchall()
         print(chore_table_info)
+
+        affirm = all_chores_completed(chore_table_info)
+        print(affirm)
+        if affirm:
+            flash(affirm)
+
         return render_template("index.html", chore_lst=chore_table_info)
     else:
         return redirect(url_for('welcome'))
