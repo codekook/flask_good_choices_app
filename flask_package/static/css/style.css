@@ -164,7 +164,9 @@ footer h3 {
     margin: 0.0;
     background: #42a0d3;
     color: #000;
-
+    font-family: arial, sans-serif;
+    font-size: 1.4em;
+    font-weight: bold;
     list-style-type: none;
     list-style: none;
 }

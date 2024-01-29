@@ -7,12 +7,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from dotenv import dotenv_values
 
 app = Flask(__name__)
 
-app.secret_key = b'/\xeb~\xd7\xca(%\xf7'
+conf = dotenv_values(".env")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.secret_key = conf["SECRET_KEY"]
+
+app.config['SQLALCHEMY_DATABASE_URI'] = conf["DB_CONFIG"]
 
 app.logger.setLevel(DEBUG)
 

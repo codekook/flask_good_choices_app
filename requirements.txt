@@ -31,7 +31,7 @@ click==8.1.7
     #   pip-tools
 cryptography==42.0.1
     # via -r requirements.in
-dill==0.3.7
+dill==0.3.8
     # via
     #   -r requirements.in
     #   pylint
@@ -105,6 +105,8 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements.in
     #   build
+python-dotenv==1.0.1
+    # via -r requirements.in
 sqlalchemy==2.0.25
     # via
     #   -r requirements.in

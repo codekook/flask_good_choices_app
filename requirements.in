@@ -21,6 +21,7 @@ MarkupSafe
 mccabe
 packaging
 pip-tools
+python-dotenv
 platformdirs
 pycparser
 pylint
