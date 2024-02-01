@@ -15,7 +15,9 @@ conf = dotenv_values(".env")
 
 app.secret_key = conf["SECRET_KEY"]
 
+app.config['ENV'] = 'production'
 app.config['SQLALCHEMY_DATABASE_URI'] = conf["DB_CONFIG"]
+app.config['DEBUG'] = False
 
 app.logger.setLevel(DEBUG)
 
