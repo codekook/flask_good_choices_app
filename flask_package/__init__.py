@@ -7,7 +7,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from dotenv import dotenv_values
+from dotenv import load_dotenv, dotenv_values
+import os
 
 app = Flask(__name__)
 
@@ -15,9 +16,17 @@ conf = dotenv_values(".env")
 
 app.secret_key = conf["SECRET_KEY"]
 
-app.config['ENV'] = 'production'
-app.config['SQLALCHEMY_DATABASE_URI'] = conf["DB_CONFIG"]
-app.config['DEBUG'] = False
+load_dotenv()
+
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}:3306/{databasename}".format(
+    username=os.getenv("USERNAME"),
+    password=os.getenv("PASSWORD"),
+    hostname=os.getenv("HOSTNAME"),
+    databasename=os.getenv("DBNAME")
+)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config['DEBUG'] = True
 
 app.logger.setLevel(DEBUG)
 

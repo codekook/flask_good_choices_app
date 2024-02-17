@@ -81,7 +81,7 @@ def index():
             if request.form.get('new_chore'):
                 chore_input = request.form['new_chore']
                 new_chore = Chore(
-                chore=chore_input, frequency='Weekly', completed='\U0001F636')
+                chore=chore_input, frequency='Weekly', completed="\U0001F636")
                 db.session.add(new_chore)
                 db.session.commit()
                 app.logger.debug('New Chore: ' + chore_input)
@@ -94,14 +94,14 @@ def index():
                 app.logger.debug('Deleted Chore: ' + str(chore_to_delete))
 
             if request.form.get('reset'):
-                reset_chores = db.update(Chore).values(completed='\U0001F636')
+                reset_chores = db.update(Chore).values(completed="\U0001F636")
                 db.session.execute(reset_chores)
                 db.session.commit()
                 app.logger.debug('Reset Chores')
 
             if request.form.get('completed'):
                 chore_number = request.form['chore_num']
-                print(chore_number)
+                print("chore_num: ", chore_number)
                 chore_completed = db.update(Chore).where(
                     Chore.chore_id == chore_number).values(completed="\U0001F600")
                 db.session.execute(chore_completed)
@@ -110,10 +110,11 @@ def index():
 
         chore_table_info = db.session.execute(db.select(Chore.chore_id,
                                                         Chore.chore, Chore.completed).order_by(Chore.chore_id)).fetchall()
-        print(chore_table_info)
+
+        app.logger.debug('Chore Table Info: ' + str(chore_table_info))
 
         affirm = all_chores_completed(chore_table_info)
-        print(affirm)
+        app.logger.debug('All Chores Completed: ' + str(affirm))
         if affirm:
             flash(affirm)
 

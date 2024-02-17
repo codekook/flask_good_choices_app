@@ -31,7 +31,7 @@ class Chore(db.Model):
     """Creates four columns for a Chore table in the sqlite database"""
 
     __tablename__ = 'chores'
-    chore_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True, autoincrement=True)
+    chore_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     chore = db.Column(db.String(255), unique=True, nullable=False)
     completed = db.Column(db.String(255), nullable=False)
     frequency = db.Column(db.String(255), nullable=False)
