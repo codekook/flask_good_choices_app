@@ -115,7 +115,7 @@ def index():
 
         affirm = all_chores_completed(chore_table_info)
         app.logger.debug('All Chores Completed: ' + str(affirm))
-        if affirm:
+        if affirm is not None:
             flash(affirm)
 
         return render_template("index.html", chore_lst=chore_table_info)

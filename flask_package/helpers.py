@@ -33,5 +33,5 @@ def all_chores_completed(chore_table_info):
     emo_list = []
     for i, j, k in chore_table_info:
         emo_list.append(k)
-    if all(k == "\U0001F600" for k in emo_list):
+    if all(k == "\U0001F600" for k in emo_list) and len(emo_list) > 0:
         return random.choice(affirmations)
