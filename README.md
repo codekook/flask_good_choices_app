@@ -8,11 +8,11 @@
 - **Model: mySql/Sqlalchemy**
 - **View: HTML/CSS/Jinja**
 
-My first web application is built using the classic model, view, controller construct and is hosted on PythonAnywhere.  The purpose of the app is to create a simple tool for tracking chores getting completed around the house and providing immediate positive feedback when they're finished.  There are more features and testing I look forward to adding, but for now this is a good start.
+My first web application is built using the classic model, view, controller construct and is hosted on PythonAnywhere.  The purpose of the app is to create a simple tool for tracking chores getting completed around the house and providing immediate positive feedback when they're finished.  There are more features and testing I look forward to adding, but for now this is a good start.  
 
 **Check it out here- [Good Choices App](https://ralphcorey.pythonanywhere.com)**
 
-## Features
+## Current Features
 
 - Register
 - Login/Logout
@@ -20,6 +20,11 @@ My first web application is built using the classic model, view, controller cons
 - Add/Delete Chores
 - Complete Chores
 - Reset Chores
+
+## Future Features
+
+- Tailwind CSS to improve the UI
+- HTMX to improve the UX
 
 ## Other important tools
 
