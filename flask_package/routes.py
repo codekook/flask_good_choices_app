@@ -77,11 +77,12 @@ def index():
     """Renders the main page for creating, deleting, and managing chores."""
 
     if current_user.is_authenticated:
+        print("current_user: ", current_user.username)
         if request.method == "POST":
             if request.form.get('new_chore'):
                 chore_input = request.form['new_chore']
                 new_chore = Chore(
-                chore=chore_input, frequency='Weekly', completed="\U0001F636")
+                chore=chore_input, frequency='Weekly', completed="\U0001F636", username=current_user.username)
                 db.session.add(new_chore)
                 db.session.commit()
                 app.logger.debug('New Chore: ' + chore_input)
@@ -109,7 +110,7 @@ def index():
                 app.logger.debug('Chore Completed Number: ' + str(chore_completed))
 
         chore_table_info = db.session.execute(db.select(Chore.chore_id,
-                                                        Chore.chore, Chore.completed).order_by(Chore.chore_id)).fetchall()
+                                                        Chore.chore, Chore.completed).where(Chore.username == current_user.username).order_by(Chore.chore_id)).fetchall()
 
         app.logger.debug('Chore Table Info: ' + str(chore_table_info))
 
