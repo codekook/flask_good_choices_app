@@ -12,7 +12,7 @@ from datetime import date
 @app.route('/welcome')
 def welcome():
 
-    """Renders the login page."""
+    """Renders the welcome page and registration."""
 
     return render_template("welcome.html")
 
@@ -43,6 +43,26 @@ def register():
         app.logger.error('Validation Error\n' + str(form.errors))
     return render_template("register.html", title='Register', form=form)
 
+@app.route('/register_partial', methods=['GET', 'POST'])
+def register_partial():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        today = date.today()
+        user = User(date=today,
+                    username=form.username.data,
+                    email=form.email.data,
+                    password=hashed_password
+                    )
+        db.session.add(user)
+        db.session.commit()
+        flash("Thanks for creating an account!")
+        return redirect(url_for('login'))
+
+    if form.errors:
+        flash('Oops, you need to check your form' + str(form.errors))
+        app.logger.error('Validation Error\n' + str(form.errors))
+    return render_template("register_partial.html", form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -122,6 +142,26 @@ def index():
         return render_template("index.html", chore_lst=chore_table_info)
     else:
         return redirect(url_for('welcome'))
+
+@app.route('/add_chore_partial', methods=['GET', 'POST'])
+def add_chore_partial():
+
+    if current_user.is_authenticated:
+        print("current_user: ", current_user.username)
+        if request.method == "POST":
+            if request.form.get('new_chore'):
+                chore_input = request.form['new_chore']
+                new_chore = Chore(
+                chore=chore_input, frequency='Weekly', completed="\U0001F636", username=current_user.username)
+                db.session.add(new_chore)
+                db.session.commit()
+                app.logger.debug('New Chore: ' + chore_input)
+        return render_template("add_chore_partial.html")
+
+@app.route('/cancel_add_chore_partial', methods=['GET'])
+def cancel_add_chore_partial():
+    return render_template("cancel_add_chore_partial.html")
+
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():

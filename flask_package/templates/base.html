@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta property="og:title" content="Good Choices App">
-    <meta property="og:type" content="Helps manaage finishing chores around the house">
+    <meta property="og:type" content="Helps getting chores finished around the house">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
 
@@ -17,43 +17,32 @@
     <link rel="apple-touch-icon" href="icon.png">
 
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
+    <!--link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}"-->
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
 
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#fafafa">
 
-    <!-- script type="module" defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script -->
     <script src="/../static/js/htmx.min.js"></script>
 </head>
 
 <body>
     <div class="header-container">
-        <div class="container-fluid">
-            <header class="wrapper clearfix">
-                <div class="d-flex justify-content-center fg">
-                    <div class="row">
-                        <div class="column">
-                            <img src="/../static/img/IMG_1102.jpeg" alt="palm" width="100" height="100" class="rounded-circle">
-                        </div> 
-                        <div class="column">
-                            <a href="{{ url_for('welcome') }}"><h1 class="title">Good Choices</h1></a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="navbar navbar-expand-lg">
-                    <ul id="navbar">
-                        {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('index') }}">Chore Tracker</a>
-                        <a href="{{ url_for('logout') }}">Logout</a>
-                        <a href="{{ url_for('feedback') }}">Feedback</a>
-                        {% else %}
-                        <a href="{{ url_for('register') }}">Register</a><a href="{{ url_for('login') }}">Login</a>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </header>
+        <img src="/../static/img/IMG_1102.jpeg" alt="palm" width="100" height="100" class="logo">
+
+        <a href="{{ url_for('welcome') }}" style="text-decoration: none"><h1 class="title">Good Choices</h1></a>
+
+        <div class="header-buttons">
+
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('index') }}" class="btn btn-success header-button">Chore Tracker</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-success header-button">Logout</a>
+            <a href="{{ url_for('feedback') }}" class="btn btn-success header-button">Feedback</a>
+            {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary header-button">Register</a><a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
         </div>
-    </div>  
+    </div>
 
     <div class="main-container">
         <div class="main wrapper clearfix">
