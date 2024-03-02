@@ -1,5 +1,5 @@
-"""Create the application, instantiate and configure the sqlite 
-database passing in the app, instantiate Bcrypt for hashing the 
+"""Create the application, instantiate and configure the sqlite
+database passing in the app, instantiate Bcrypt for hashing the
 password and instantiate a login_manager object and pass in the app"""
 
 from logging import DEBUG
@@ -7,16 +7,25 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 
-conf = dotenv_values(".env")
+load_dotenv()
 
-app.secret_key = conf["SECRET_KEY"]
+app.secret_key = os.getenv("SECRET_KEY")
 
-app.config['ENV'] = 'production'
-app.config['SQLALCHEMY_DATABASE_URI'] = conf["DB_CONFIG"]
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username=os.getenv("USERNAME"),
+    password=os.getenv("PASSWORD"),
+    hostname=os.getenv("HOSTNAME"),
+    databasename=os.getenv("DBNAME")
+)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 299
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG'] = False
 
 app.logger.setLevel(DEBUG)
