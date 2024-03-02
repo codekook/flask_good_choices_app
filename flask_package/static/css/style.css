@@ -169,7 +169,8 @@ a:visited {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #000000; 
+    color: #000000;
+    font-family: Helvetica, Arial, sans-serif; 
     
 }
 
@@ -184,7 +185,7 @@ footer h3 {
     margin: 0.0;
     background: #42a0d3;
     color: #000;
-    font-family: arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 1.4em;
     font-weight: bold;
     list-style-type: none;
