@@ -20,11 +20,12 @@ My first web application is built using the classic model, view, controller cons
 - Add/Delete Chores
 - Complete Chores
 - Reset Chores
+- HTMX
+- Bootstrap
 
 ## Future Features
 
-- Tailwind CSS to improve the UI
-- HTMX to improve the UX
+- Pytest
 
 ## Other important tools
 
