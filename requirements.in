@@ -19,6 +19,7 @@ itsdangerous
 Jinja2
 MarkupSafe
 mccabe
+mysql-connector-python
 packaging
 pip-tools
 python-dotenv
@@ -27,6 +28,7 @@ pycparser
 pylint
 PyMySQL
 pyproject_hooks
+python-dotenv
 SQLAlchemy
 tomlkit
 typing_extensions

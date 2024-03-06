@@ -98,6 +98,10 @@ textarea {
 }
 
 .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
     border-bottom: 10px solid #2fa250;
 }
 
@@ -113,10 +117,30 @@ textarea {
 }
 
 .title {
+    text-decoration: none;
     color: rgb(0, 0, 0);
     font-family: "signpainter", "cursive";
-    font-weight: bold;
     font-size: 3.7em
+}
+
+.table_title {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-family: Helvetica, arial, sans-serif;
+    align-items: center;
+}
+
+.logo {
+    border-radius: 10px
+}
+
+.header-buttons {
+    display: flex;
+}
+
+.header-button {
+    margin-right: 20px;
+    color: rgb(0, 0, 0)
 }
 
 .wrapper {
@@ -132,12 +156,8 @@ body {
     padding-bottom: 10px;
 }
 
-.navbar {
-    margin-bottom: 10px;
-}
-
 a {
-    color: #000000;
+    color: rgb(0, 0 ,0);
 }
 
 a:hover {
@@ -149,7 +169,8 @@ a:visited {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #000000; 
+    color: #000000;
+    font-family: Helvetica, Arial, sans-serif; 
     
 }
 
@@ -164,7 +185,7 @@ footer h3 {
     margin: 0.0;
     background: #42a0d3;
     color: #000;
-    font-family: arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 1.4em;
     font-weight: bold;
     list-style-type: none;
@@ -182,7 +203,7 @@ article.flashes {
 }
 
 table {
-    font-family: arial, sans-serif;
+    font-family: helvetica, arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
