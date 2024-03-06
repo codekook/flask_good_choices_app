@@ -100,7 +100,6 @@ textarea {
 .header-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px 20px;
     border-bottom: 10px solid #2fa250;
 }
@@ -118,9 +117,10 @@ textarea {
 
 .title {
     text-decoration: none;
+    justify-content: center;
     color: rgb(0, 0, 0);
     font-family: "signpainter", "cursive";
-    font-size: 3.7em
+    font-size: 3.7em;
 }
 
 .table_title {
@@ -131,16 +131,19 @@ textarea {
 }
 
 .logo {
-    border-radius: 10px
+    border-radius: 10px;
+    justify-content: left;
+    margin-right: 20px;
 }
 
 .header-buttons {
     display: flex;
+    margin-top: 10px;
+    margin-left: 40px;
 }
 
 .header-button {
     margin-right: 20px;
-    color: rgb(0, 0, 0)
 }
 
 .wrapper {
