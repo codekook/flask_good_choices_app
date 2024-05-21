@@ -105,6 +105,9 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements.in
     #   build
+pytest==8.1.1  
+    # via
+    #  -r requirements.in 
 python-dotenv==1.0.1
     # via -r requirements.in
 sqlalchemy==2.0.25

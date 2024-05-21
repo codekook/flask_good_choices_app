@@ -28,6 +28,7 @@ pycparser
 pylint
 PyMySQL
 pyproject_hooks
+pytest 
 python-dotenv
 SQLAlchemy
 tomlkit
