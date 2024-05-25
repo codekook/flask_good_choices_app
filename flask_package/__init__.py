@@ -14,16 +14,10 @@ app = Flask(__name__)
 
 load_dotenv()
 
-<<<<<<< HEAD
 app.secret_key = os.getenv("SECRET_KEY").encode(
     'utf-8', errors='replace').decode()
 
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}:3306/{databasename}".format(
-=======
-app.secret_key = os.getenv("SECRET_KEY")
-
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
->>>>>>> 4677c1a8f4402d932cdc64f7cc1b1f9ccb82ace2
     username=os.getenv("USERNAME"),
     password=os.getenv("PASSWORD"),
     hostname=os.getenv("HOSTNAME"),
