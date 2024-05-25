@@ -102,7 +102,7 @@ def index():
             if request.form.get('new_chore'):
                 chore_input = request.form['new_chore']
                 new_chore = Chore(
-                chore=chore_input, frequency='Weekly', completed="\U0001F636", username=current_user.username)
+                chore=chore_input, frequency='Weekly', completed='\U0001F636', username=current_user.username)
                 db.session.add(new_chore)
                 db.session.commit()
                 app.logger.debug('New Chore: ' + chore_input)
@@ -131,9 +131,8 @@ def index():
 
         chore_table_info = db.session.execute(db.select(Chore.chore_id,
                                                         Chore.chore, Chore.completed).where(Chore.username == current_user.username).order_by(Chore.chore_id)).fetchall()
-
+        app.logger.debug('Chore table info: ' + str(chore_table_info))
         app.logger.debug('Chore Table Info: ' + str(chore_table_info))
-
         affirm = all_chores_completed(chore_table_info)
         app.logger.debug('All Chores Completed: ' + str(affirm))
         if affirm is not None:
