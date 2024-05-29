@@ -1,4 +1,3 @@
-
 from flask_package import app
 import pytest 
 
@@ -11,6 +10,18 @@ def test_app():
 @pytest.fixture()
 def client(test_app):
     return test_app.test_client()
+
+@pytest.fixture()
+def auth_client(test_app):
+    client = test_app.test_client()
+    response = client.get("/login")
+    csrf_token = response.data.decode().split('name="csrf_token" type="hidden" value="')[1].split('"')[0]
+
+    client.post("/login", data={
+        "email": "ralph.corey.1@gmail.com", 
+        "password":"test", 
+        "csrf_token":csrf_token})
+    return client 
 
 @pytest.fixture()
 def runner(test_app):
