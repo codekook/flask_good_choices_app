@@ -29,6 +29,9 @@ click==8.1.7
     #   -r requirements.in
     #   flask
     #   pip-tools
+coverage=7.5.3
+    # via
+    #   -r requirements.in
 cryptography==42.0.1
     # via -r requirements.in
 dill==0.3.8
@@ -106,6 +109,9 @@ pyproject-hooks==1.0.0
     #   -r requirements.in
     #   build
 pytest==8.1.1  
+    # via
+    #  -r requirements.in
+pytest-cov==5.0.0
     # via
     #  -r requirements.in 
 python-dotenv==1.0.1

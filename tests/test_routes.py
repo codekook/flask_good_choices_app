@@ -15,6 +15,9 @@ def test_nonauthenitcated_requests(client, non_auth_routes):
     assert response.status_code == 200
 
 def test_access_session(client):
+
+    '''Test the establishment of a session and creation of a session id'''
+
     with client:
         response = client.get("/login")
         csrf_token = response.data.decode().split('name="csrf_token" type="hidden" value="')[1].split('"')[0]
@@ -33,5 +36,8 @@ def test_access_session(client):
     "/cancel_add_chore_partial"
 ])
 def test_authenticated_requests(auth_client, auth_routes):
+
+    '''Test the routes that require authentication'''
+
     response = auth_client.get(auth_routes)
     assert response.status_code == 200 

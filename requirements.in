@@ -4,6 +4,7 @@ blinker
 build
 cffi
 click
+coverage
 cryptography
 dill
 dnspython
@@ -29,6 +30,7 @@ pylint
 PyMySQL
 pyproject_hooks
 pytest 
+pytest-cov
 python-dotenv
 SQLAlchemy
 tomlkit
