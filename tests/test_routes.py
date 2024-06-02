@@ -1,6 +1,5 @@
-import pytest 
-from flask_package import routes 
-from flask import session
+import pytest
+from flask import session 
 
 @pytest.mark.parametrize("non_auth_routes", [
     "/welcome", 
@@ -40,4 +39,24 @@ def test_authenticated_requests(auth_client, auth_routes):
     '''Test the routes that require authentication'''
 
     response = auth_client.get(auth_routes)
-    assert response.status_code == 200 
+    assert response.status_code == 200
+
+
+def test_new_chore(auth_client):
+    with auth_client:
+        auth_client.get("/add_chore_partial")
+        response = auth_client.post("/add_chore_partial", data={
+            "new_chore" : "Clean Room"
+        })
+        assert response.status_code == 200
+
+def test_feedback(auth_client):
+    with auth_client:
+        auth_client.get("/feedback")
+        response = auth_client.post("/index", data={
+            "feedback" : "Great app"
+        })
+        assert response.status_code == 200
+        
+
+    

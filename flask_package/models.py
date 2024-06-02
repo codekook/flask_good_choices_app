@@ -1,4 +1,4 @@
-"""Creates the database schema for the sqlite database"""
+"""Creates the database schema for the mysql database"""
 
 from flask_login import UserMixin
 from flask_package import db, login_manager
@@ -12,7 +12,7 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
 
-    """Creates six columns for a User table in the sqlite database"""
+    """Creates six columns for a User table in the mysql database"""
 
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
 
 class Chore(db.Model):
 
-    """Creates four columns for a Chore table in the sqlite database"""
+    """Creates four columns for a Chore table in the mysql database"""
 
     __tablename__ = 'chores'
     chore_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
