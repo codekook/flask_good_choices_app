@@ -21,7 +21,7 @@ def auth_client(test_app):
         "email": "ralph.corey.1@gmail.com", 
         "password":"test", 
         "csrf_token":csrf_token})
-    return client 
+    return client
 
 @pytest.fixture()
 def runner(test_app):

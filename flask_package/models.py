@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
 
 class Chore(db.Model):
 
-    """Creates four columns for a Chore table in the mysql database"""
+    """Creates five columns for a Chore table in the mysql database"""
 
     __tablename__ = 'chores'
     chore_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
