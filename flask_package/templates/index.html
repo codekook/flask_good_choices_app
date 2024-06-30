@@ -22,8 +22,8 @@
                         <tr>
                             <th hidden>Number</th>
                             <th>Chore</th>
-                            <th>Completed</th>
                             <th>Emo</th>
+                            <th>Completed</th>
                             <th>Remove</th>
                         </tr>
                     </thead>
@@ -33,13 +33,13 @@
                                 <tr class="" id="trow">
                                     <td hidden id="num" name="num">{{chore[0]}}</td>
                                     <td>{{chore[1]}}</td>
+                                    <td id="emo">{{chore[2]}}</td>
                                     <td>
                                         <form action="" method="post">
                                             <input type="submit" method="post" name="completed" id="completed" value="+" class="btn btn-success">
                                             <input type="hidden" name="chore_num" id="chore_num" value="{{chore[0]}}">
                                         </form>
                                     </td>
-                                    <td id="emo">{{chore[2]}}</td>
                                     <td>
                                         <form action="" method="post">
                                             <input type="submit" name="rmove_chore" id="rmove_chore" value="x" class="btn btn-danger">
