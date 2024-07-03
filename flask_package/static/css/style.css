@@ -216,6 +216,7 @@ th {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;
+    font-size: large;
     }
 
 tr:nth-child(even) {
@@ -231,7 +232,8 @@ tr:nth-child(even) {
 }
 
 tr td {
-    transition: all 1.2s 
+    transition: all 1.2s;
+    font-size: large; 
 }
 
 /* ==============
