@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_package.models import User, Chore
 from flask_package import app, db, bcrypt
 from flask_package.forms import RegistrationForm, LoginForm
-from flask_package.helpers import store_feedback, all_chores_completed
+from flask_package.helpers import store_feedback, all_chores_completed, generate_happy_emoji
 from flask_login import login_user, logout_user, current_user
 from datetime import date
 
@@ -45,6 +45,11 @@ def register():
 
 @app.route('/register_partial', methods=['GET', 'POST'])
 def register_partial():
+
+    """Registers new users and redirects them to the login page."""
+
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
@@ -62,7 +67,14 @@ def register_partial():
     if form.errors:
         flash('Oops, you need to check your form' + str(form.errors))
         app.logger.error('Validation Error\n' + str(form.errors))
-    return render_template("register_partial.html", form=form)
+    return render_template("register_partial.html")
+
+@app.route('/cancel_register_partial', methods=['GET'])
+def cancel_register_partial():
+
+    """Cancel the registration page."""
+
+    return render_template("cancel_register_partial.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -122,9 +134,9 @@ def index():
 
             if request.form.get('completed'):
                 chore_number = request.form['chore_num']
-                print("chore_num: ", chore_number)
+                happy_emoji = generate_happy_emoji()
                 chore_completed = db.update(Chore).where(
-                    Chore.chore_id == chore_number).values(completed="\U0001F600")
+                    Chore.chore_id == chore_number).values(completed=happy_emoji)
                 db.session.execute(chore_completed)
                 db.session.commit()
                 app.logger.debug('Chore Completed Number: ' + str(chore_completed))
@@ -145,7 +157,6 @@ def index():
 def add_chore_partial():
 
     if current_user.is_authenticated:
-        print("current_user: ", current_user.username)
         if request.method == "POST":
             if request.form.get('new_chore'):
                 chore_input = request.form['new_chore']
@@ -159,7 +170,6 @@ def add_chore_partial():
 @app.route('/cancel_add_chore_partial', methods=['GET'])
 def cancel_add_chore_partial():
     return render_template("cancel_add_chore_partial.html")
-
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():

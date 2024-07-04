@@ -29,9 +29,35 @@ def all_chores_completed(chore_table_info):
                     "Your help means a lot!",
                     "It means the world to me!"
                     ]
+    
+    emojis_list = [
+        "\U0001F600",
+        "\U0001F642",
+        "\U0001F60A",
+        "\U0001F917",
+        "\U0001F973",
+        "\U0001F60E",
+        "\U0001F60B"
+    ]
 
     emo_list = []
     for i, j, k in chore_table_info:
         emo_list.append(k)
-    if all(k == "\U0001F600" for k in emo_list) and len(emo_list) > 0:
+    if "\U0001F636" not in emo_list:
         return random.choice(affirmations)
+    
+def generate_happy_emoji():
+
+    """Returns a random emoji face when a chore is completed"""
+
+    emojis_list = [
+        "\U0001F600",
+        "\U0001F642",
+        "\U0001F60A",
+        "\U0001F917",
+        "\U0001F973",
+        "\U0001F60E",
+        "\U0001F60B"
+    ]
+
+    return random.choice(emojis_list)
