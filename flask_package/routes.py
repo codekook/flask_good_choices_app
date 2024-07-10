@@ -8,14 +8,13 @@ from flask_package.helpers import store_feedback, all_chores_completed, generate
 from flask_login import login_user, logout_user, current_user
 from datetime import date
 
-@app.route('/')
-@app.route('/welcome')
+@app.route("/")
+@app.route('/welcome', methods=["GET", "POST"])
 def welcome():
 
     """Renders the welcome page and registration."""
 
     return render_template("welcome.html")
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -41,38 +40,20 @@ def register():
     if form.errors:
         flash('Oops, you need to check your form' + str(form.errors))
         app.logger.error('Validation Error\n' + str(form.errors))
+    
     return render_template("register.html", title='Register', form=form)
 
 @app.route('/register_partial', methods=['GET', 'POST'])
 def register_partial():
 
-    """Registers new users and redirects them to the login page."""
+    """Returns the HTMX partial for the registration page.  Not yet in use."""
 
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        today = date.today()
-        user = User(date=today,
-                    username=form.username.data,
-                    email=form.email.data,
-                    password=hashed_password
-                    )
-        db.session.add(user)
-        db.session.commit()
-        flash("Thanks for creating an account!")
-        return redirect(url_for('login'))
-
-    if form.errors:
-        flash('Oops, you need to check your form' + str(form.errors))
-        app.logger.error('Validation Error\n' + str(form.errors))
     return render_template("register_partial.html")
 
 @app.route('/cancel_register_partial', methods=['GET'])
 def cancel_register_partial():
 
-    """Cancel the registration page."""
+    """Cancels the HTMX partial for the registration page.  Not yet in use."""
 
     return render_template("cancel_register_partial.html")
 
@@ -153,22 +134,18 @@ def index():
     else:
         return redirect(url_for('welcome'))
 
-@app.route('/add_chore_partial', methods=['GET', 'POST'])
+@app.route('/add_chore_partial', methods=['GET'])
 def add_chore_partial():
 
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            if request.form.get('new_chore'):
-                chore_input = request.form['new_chore']
-                new_chore = Chore(
-                chore=chore_input, frequency='Weekly', completed="\U0001F636", username=current_user.username)
-                db.session.add(new_chore)
-                db.session.commit()
-                app.logger.debug('New Chore: ' + chore_input)
-        return render_template("add_chore_partial.html")
+    '''Returns the HTMX partial for the add chore form.'''
+
+    return render_template("add_chore_partial.html")
 
 @app.route('/cancel_add_chore_partial', methods=['GET'])
 def cancel_add_chore_partial():
+
+    '''Cancels the HTMX partial for the add chore form.'''
+
     return render_template("cancel_add_chore_partial.html")
 
 @app.route('/feedback', methods=['GET', 'POST'])
