@@ -23,20 +23,20 @@
                     <tbody id="tbody">
                         {% if chore_lst %}
                             {% for chore in chore_lst %}
-                                <tr class="" id="trow">
-                                    <td hidden id="num" name="num">{{chore[0]}}</td>
+                                <tr>
+                                    <td hidden>{{chore[0]}}</td>
                                     <td>{{chore[1]}}</td>
-                                    <td id="emoji">{{chore[2]}}</td>
+                                    <td>{{chore[2]}}</td>
                                     <td>
                                         <form action="" method="post">
-                                            <input type="submit" method="post" name="completed" id="completed" value="+" class="btn btn-success">
-                                            <input type="hidden" name="chore_num" id="chore_num" value="{{chore[0]}}">
+                                            <input type="submit" method="post" name="completed" value="+" class="btn btn-success">
+                                            <input type="hidden" name="chore_num" value="{{chore[0]}}">
                                         </form>
                                     </td>
                                     <td>
                                         <form action="" method="post">
-                                            <input type="submit" name="rmove_chore" id="rmove_chore" value="x" class="btn btn-danger">
-                                            <input type="hidden" name="chore_num" id="chore_num" value={{chore[0]}}>
+                                            <input type="submit" name="rmove_chore" value="x" class="btn btn-danger">
+                                            <input type="hidden" name="chore_num" value="{{chore[0]}}">
                                         </form>
                                     </td>
                                 </tr>

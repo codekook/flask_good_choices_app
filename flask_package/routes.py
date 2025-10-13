@@ -90,7 +90,7 @@ def index():
     """Renders the main page for creating, deleting, and managing chores."""
 
     if current_user.is_authenticated:
-        print("current_user: ", current_user.username)
+        app.logger.debug(f'Current user: {current_user.username}')
         if request.method == "POST":
             if request.form.get('new_chore'):
                 chore_input = request.form['new_chore']

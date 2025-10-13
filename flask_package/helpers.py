@@ -1,7 +1,7 @@
 """Helpers has two functions that assist in the functionality of the application."""
 
 import random
-from datetime import datetime
+from datetime import datetime, UTC
 
 feedback_list = []
 
@@ -12,7 +12,7 @@ def store_feedback(url):
     feedback_list.append(dict(
         url=url,
         user='chipcorey',
-        date=datetime.utcnow()
+        date=datetime.now(UTC)
     ))
 
 def all_chores_completed(chore_table_info):
