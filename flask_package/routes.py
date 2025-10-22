@@ -5,6 +5,7 @@ from flask_package.models import User, Chore
 from flask_package import app, db, bcrypt
 from flask_package.forms import RegistrationForm, LoginForm
 from flask_package.helpers import store_feedback, all_chores_completed, generate_happy_emoji
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_login import login_user, logout_user, current_user
 from datetime import date
 
@@ -32,11 +33,19 @@ def register():
                     email=form.email.data,
                     password=hashed_password
                     )
-        db.session.add(user)
-        db.session.commit()
-        flash("Thanks for creating an account!")
-        return redirect(url_for('login'))
-
+        try:
+            db.session.add(user)
+            db.session.commit()
+            flash("Thanks for creating an account!")
+            return redirect(url_for('login'))
+        except IntegrityError as e:
+            db.session.rollback()
+            app.logger.error('Integrity Error\n' + str(e))
+            flash("Username or email already exists. Please choose another.")
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            app.logger.error('SQLAlchemy Error\n' + str(e))
+            flash("An error occurred while creating your account. Please try again.")
     if form.errors:
         flash('Oops, you need to check your form' + str(form.errors))
         app.logger.error('Validation Error\n' + str(form.errors))
@@ -92,43 +101,68 @@ def index():
     if current_user.is_authenticated:
         app.logger.debug(f'Current user: {current_user.username}')
         if request.method == "POST":
-            if request.form.get('new_chore'):
-                chore_input = request.form['new_chore']
-                new_chore = Chore(
-                chore=chore_input, frequency='Weekly', completed='\U0001F636', username=current_user.username)
-                db.session.add(new_chore)
-                db.session.commit()
-                app.logger.debug('New Chore: ' + chore_input)
+                if request.form.get('new_chore'):
+                    try:
+                        chore_input = request.form['new_chore']
+                        new_chore = Chore(
+                        chore=chore_input, frequency='Weekly', completed='\U0001F636', username=current_user.username)
+                        db.session.add(new_chore)
+                        db.session.commit()
+                        app.logger.debug('New Chore: ' + chore_input)
+                    except SQLAlchemyError as e:
+                        db.session.rollback()
+                        app.logger.error('Failed to add new chore:\n' + str(e))
+                        flash("Oops. We couldn't add your chore. Please try again.")   
 
-            if request.form.get('rmove_chore'):
-                chore_number = request.form['chore_num']
-                chore_to_delete = db.delete(Chore).where(Chore.chore_id == chore_number)
-                db.session.execute(chore_to_delete)
-                db.session.commit()
-                app.logger.debug('Deleted Chore: ' + str(chore_to_delete))
+                if request.form.get('rmove_chore'):
+                    try:
+                        chore_number = request.form['chore_num']
+                        chore_to_delete = db.delete(Chore).where(Chore.chore_id == chore_number)
+                        db.session.execute(chore_to_delete)
+                        db.session.commit()
+                        app.logger.debug('Deleted Chore: ' + str(chore_to_delete))
+                    except SQLAlchemyError as e:
+                        db.session.rollback()
+                        app.logger.error('Failed to delete chore:\n' + str(e))
+                        flash("Oops. We couldn't delete your chore. Please try again.") 
 
-            if request.form.get('reset'):
-                reset_chores = db.update(Chore).values(completed="\U0001F636")
-                db.session.execute(reset_chores)
-                db.session.commit()
-                app.logger.debug('Reset Chores')
+                if request.form.get('reset'):
+                    try:
+                        reset_chores = db.update(Chore).values(completed="\U0001F636")
+                        db.session.execute(reset_chores)
+                        db.session.commit()
+                        app.logger.debug('Reset Chores')
+                    except SQLAlchemyError as e:
+                        db.session.rollback()
+                        app.logger.error('Failed to reset chores:\n' + str(e))
+                        flash("Oops. We couldn't reset your chores. Please try again.") 
 
-            if request.form.get('completed'):
-                chore_number = request.form['chore_num']
-                happy_emoji = generate_happy_emoji()
-                chore_completed = db.update(Chore).where(
-                    Chore.chore_id == chore_number).values(completed=happy_emoji)
-                db.session.execute(chore_completed)
-                db.session.commit()
-                app.logger.debug('Chore Completed Number: ' + str(chore_completed))
+                if request.form.get('completed'):
+                    try:
+                        chore_number = request.form['chore_num']
+                        happy_emoji = generate_happy_emoji()
+                        chore_completed = db.update(Chore).where(
+                            Chore.chore_id == chore_number).values(completed=happy_emoji)
+                        db.session.execute(chore_completed)
+                        db.session.commit()
+                        app.logger.debug('Chore Completed Number: ' + str(chore_completed))
+                    except SQLAlchemyError as e:
+                        db.session.rollback()
+                        app.logger.error('Failed to mark chore complete:\n' + str(e))
+                        flash("Oops. We couldn't mark your chore complete. Please try again.")
 
-        chore_table_info = db.session.execute(db.select(Chore.chore_id,
-                                                        Chore.chore, Chore.completed).where(Chore.username == current_user.username).order_by(Chore.chore_id)).fetchall()
-        app.logger.debug('Chore table info: ' + str(chore_table_info))
-        affirm = all_chores_completed(chore_table_info)
-        app.logger.debug('All Chores Completed: ' + str(affirm))
-        if affirm is not None:
-            flash(affirm)
+        try:
+            chore_table_info = db.session.execute(db.select(Chore.chore_id,
+                                                            Chore.chore, Chore.completed).where(Chore.username == current_user.username).order_by(Chore.chore_id)).fetchall()
+            app.logger.debug('Chore table info: ' + str(chore_table_info))
+            affirm = all_chores_completed(chore_table_info)
+            app.logger.debug('All Chores Completed: ' + str(affirm))
+            if affirm is not None:
+                flash(affirm)
+        except SQLAlchemyError as e:
+            chore_table_info = []
+            app.logger.error('Failed to retrieve chore list:\n' + str(e))
+            flash("Oops. We couldn't retrieve your chore list. Please try again.")
 
         return render_template("index.html", chore_lst=chore_table_info)
     else:
@@ -156,9 +190,13 @@ def feedback():
     if current_user.is_authenticated:
         if request.method == "POST":
             feedback_text = request.form['url']
-            store_feedback(feedback_text, current_user.id)
-            app.logger.debug('Feedback: ' + feedback_text)
-            flash("Your Feedback: " + feedback_text)
+            try:
+                store_feedback(feedback_text, current_user.id)
+                app.logger.debug('Feedback: ' + feedback_text)
+                flash("Your Feedback: " + feedback_text)
+            except SQLAlchemyError as e:
+                app.logger.error('Failed to store feedback:\n' + str(e))
+                flash("Oops. We couldn't store your feedback. Please try again.")   
             return redirect(url_for("index"))
         return render_template("feedback.html")
     else:
