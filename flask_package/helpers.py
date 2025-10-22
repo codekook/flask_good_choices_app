@@ -2,18 +2,21 @@
 
 import random
 from datetime import datetime, UTC
+from flask_package.models import Feedback
+from flask_package import db
 
-feedback_list = []
+def store_feedback(feedback_text, user_id):
 
-def store_feedback(url):
+    """Saves user feedback to the database"""
 
-    """Appends the user feedback dictionary to the feedback list"""
+    feedback = Feedback(
+        feedback_text=feedback_text,
+        user_id=user_id,
+        created_date=datetime.now(UTC)
+    )
+    db.session.add(feedback)
+    db.session.commit()
 
-    feedback_list.append(dict(
-        url=url,
-        user='chipcorey',
-        date=datetime.now(UTC)
-    ))
 
 def all_chores_completed(chore_table_info):
 

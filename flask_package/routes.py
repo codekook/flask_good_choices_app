@@ -155,10 +155,10 @@ def feedback():
 
     if current_user.is_authenticated:
         if request.method == "POST":
-            url = request.form['url']
-            store_feedback(url)
-            app.logger.debug('Feedback: ' + url)
-            flash("Your Feedback: " + url)
+            feedback_text = request.form['url']
+            store_feedback(feedback_text, current_user.id)
+            app.logger.debug('Feedback: ' + feedback_text)
+            flash("Your Feedback: " + feedback_text)
             return redirect(url_for("index"))
         return render_template("feedback.html")
     else:

@@ -39,3 +39,16 @@ class Chore(db.Model):
 
     def __repr__(self):
         return f"Chore('{self.chore_id}','{self.chore}', '{self.completed}', '{self.frequency}', '{self.username}')"
+    
+class Feedback(db.Model):
+
+    """Creates four columns for a Feedback table in the mysql database"""
+
+    __tablename__ = 'feedback'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    feedback_text = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
+    created_date = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return f"Feedback('{self.id}','{self.user_id}', '{self.created_date}')"
