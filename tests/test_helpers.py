@@ -1,19 +1,29 @@
 import pytest
 from flask_package import helpers
+from flask_package.models import Feedback
+from flask_package import db
 
-@pytest.mark.parametrize('url', ['Great site'])
-def test_store_feedback(url):
+@pytest.mark.parametrize('feedback_text', ['Great site'])
+def test_store_feedback(test_app, feedback_text):
 
-    '''Test if the feedback submitted by a user will be added to the feedback list'''
+    '''Test if the feedback submitted by a user is stored in the database'''
 
-    helpers.store_feedback(url)
-    result = helpers.feedback_list[0]['url']
-    assert result == helpers.feedback_list[0]['url']
+    with test_app.app_context():
+        # Store feedback with user_id=1 (assuming a test user exists)
+        helpers.store_feedback(feedback_text, user_id=1)
 
-@pytest.mark.parametrize("chore_table_info", [
-        [(25, 'Clean Room', '\U0001F642'), (15, 'Wipe Table', '\U0001F973')],
-        [(37, 'Empty trash', '\U0001F600')]
-        ])
+        # Query the database to verify it was saved
+        saved_feedback = db.session.query(Feedback).filter_by(
+            feedback_text=feedback_text).first()
+
+        assert saved_feedback is not None
+        assert saved_feedback.feedback_text == feedback_text
+        assert saved_feedback.user_id == 1
+
+        # Cleanup - delete the test feedback
+        db.session.delete(saved_feedback)
+        db.session.commit()
+
 def test_all_chores_completed(affirmations_list, chore_table_info):
 
     '''Tests if the all_chores_completed function returns an affirmation from the affirmation list'''

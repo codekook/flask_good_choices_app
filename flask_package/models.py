@@ -35,10 +35,13 @@ class Chore(db.Model):
     chore = db.Column(db.String(255), nullable=False)
     completed = db.Column(db.String(255), nullable=False)
     frequency = db.Column(db.String(255), nullable=False)
-    username = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    #Relationship to link chores to a user
+    user = db.relationship('User', backref='chores')
 
     def __repr__(self):
-        return f"Chore('{self.chore_id}','{self.chore}', '{self.completed}', '{self.frequency}', '{self.username}')"
+        return f"Chore('{self.chore_id}','{self.chore}', '{self.completed}', '{self.frequency}', '{self.user_id}')"
     
 class Feedback(db.Model):
 
